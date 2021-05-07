@@ -10,7 +10,7 @@ script:
 deploy:
   provider: pages
   skip_cleanup: true
-  github_token: $GH_TOKEN
+  github_token: $GITHUB_TOKEN
   local_dir: out
   on:
     # Only deplsoy when the build is on master or main branch - two common default branch names
