@@ -10,7 +10,7 @@
     "deploy": "npm run build && npm run export"
   },
   "dependencies": {
-    "dotenv": "^9.0.0",
+    "dotenv": "^9.0.2",
     "export": "^0.1.337",
     "next": "10.2.0",
     "next-compose-plugins": "^2.2.1",
