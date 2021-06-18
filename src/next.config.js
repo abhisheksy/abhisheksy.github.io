@@ -1,26 +1,30 @@
-const withPlugins = require('next-compose-plugins');
-const optimizedImages = require('next-optimized-images');
+const withImages = require('next-images');
+const webpack = require('webpack')
+const { parsed: localEnv } = require('dotenv').config()
 const isProd = process.env.NODE_ENV === 'production'
 
-module.exports = 
-
-module.exports = withPlugins([
-  [optimizedImages, {
-    mozjpeg: {
-      quality: 80,
-    },
-    pngquant: {
-      speed: 3,
-      strip: true,
-      verbose: true,
-    },
-    imagesPublicPath: '/abhisheksy.github.io/_next/static/images/',
-  }],
-  {
-	  // Use the CDN in production and localhost for development.
-	  // assetPrefix: isProd ? 'https://cdn.statically.io/gh/abhisheksy/abhisheksy.github.io/gh-pages/' : '',
-	  assetPrefix: '/abhisheksy.github.io/',
-	  basePath: '/abhisheksy.github.io',
-	  env,
-	}
-]);
+module.exports = withImages({
+  webpack: (config, { isServer }) => {
+    config.plugins.push(new webpack.EnvironmentPlugin(localEnv))
+    if (!isServer) {
+        config.node = {
+            fs: 'empty'
+        }
+    }
+    const nextCssLoaders = config.module.rules.find(
+      rule => typeof rule.oneOf === 'object'
+    );
+    nextCssLoaders.oneOf.forEach(loader => {
+      if (
+        loader.sideEffects &&
+        loader.issuer &&
+        loader.issuer.and &&
+        loader.issuer.and.length &&
+        loader.issuer.and[0].endsWith('_app.js')
+      ) {
+        delete loader.issuer;
+      }
+    });
+    return config;
+  },
+});
