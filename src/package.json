@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "dotenv": "^9.0.0",
+    "export": "^0.1.337",
     "next": "10.2.0",
     "next-compose-plugins": "^2.2.1",
     "next-images": "^1.7.0",
