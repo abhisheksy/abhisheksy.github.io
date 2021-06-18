@@ -1,9 +1,9 @@
-const withImages = require('next-images');
+// const withImages = require('next-images');
 const webpack = require('webpack')
 const { parsed: localEnv } = require('dotenv').config()
 const isProd = process.env.NODE_ENV === 'production'
 
-module.exports = withImages({
+module.exports = {
   webpack: (config, { isServer }) => {
     config.plugins.push(new webpack.EnvironmentPlugin(localEnv))
     if (!isServer) {
@@ -27,4 +27,4 @@ module.exports = withImages({
     });
     return config;
   },
-});
+};
